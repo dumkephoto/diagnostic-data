@@ -1,26 +1,26 @@
+'use strict';
+
 import XLSX from 'xlsx';
 import fs from 'fs';
 
-var preParseDir = './assets/pre-parse/';
-var postParseDir = './assets/post-parse/'
+/* https://www.npmjs.com/package/xlsx */
 
-var files = fs.readdirSync(preParseDir);
-console.log(files);
+let preParseDir = './assets/pre-parse/';
+let postParseDir = './assets/post-parse/'
 
+let files = fs.readdirSync(preParseDir);
 
-files.forEach(function(file) {
-	var preParseFilePath = preParseDir + file;
-	var postParseFilePath = postParseDir + file;
-	var workbook = XLSX.readFile(preParseFilePath);
+files.forEach(function(fileName) {
+	if (fileName === '.gitignore' || fileName.indexOf('.xls') === -1) return;
 
-	var sheetNames = workbook.SheetNames;
-	console.log(sheetNames);
-	var address_of_cell = 'A1';
+	let preParseFilePath = preParseDir + fileName;
+	let postParseFilePath = postParseDir + fileName;
 
+	let workbook = XLSX.readFile(preParseFilePath);
+
+	let sheetNames = workbook.SheetNames;
 	sheetNames.forEach(function(sheetName) {
-
-		var worksheet = workbook.Sheets[sheetName];
-		console.log('testing:',XLSX.utils.sheet_to_json(worksheet));
+		let worksheet = workbook.Sheets[sheetName];
+		console.log(XLSX.utils.sheet_to_json(worksheet));
 	})
-
 });
